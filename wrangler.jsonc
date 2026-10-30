@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "reviivmotors",
+  "account_id": "ae5946f648471d43d58a0c7876dbb2e0",
+  "compatibility_date": "2026-06-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "keep_vars": true,
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "reviivmotors.ca", "custom_domain": true },
+    { "pattern": "www.reviivmotors.ca", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "./reviiv-site/dist",
+    "html_handling": "auto-trailing-slash"
+  },
+  "build": {
+    "command": "npm run build"
+  }
+}

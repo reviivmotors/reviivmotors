@@ -1,0 +1,9 @@
+---
+import InventoryPage from '../../components/InventoryPage.astro';
+import { bodyTypes } from '../../data/inventory.ts';
+export function getStaticPaths() {
+  return bodyTypes.map((category) => ({ params: { bodyType: category.slug }, props: { category } }));
+}
+const { category } = Astro.props;
+---
+<InventoryPage category={category} />

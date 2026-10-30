@@ -1,0 +1,20 @@
+---
+import { money, email, type Vehicle } from '../data/inventory.ts';
+interface Props { car: Vehicle }
+const { car } = Astro.props;
+---
+              <article class="vehicle-card">
+                <div class="vehicle-photo">
+                  <span class="vehicle-index">{car.number} / INVENTORY</span>
+                  <div class="placeholder-wordmark">REVIIV <span>MOTORS</span></div>
+                  <span class="photo-note">VEHICLE PHOTOS COMING SOON</span>
+                </div>
+                <div class="vehicle-info">
+                  <div class="vehicle-meta"><span>{car.category}</span><span>{car.year}</span></div>
+                  <h3>{car.year} {car.make} {car.model}</h3>
+                  <div class="vehicle-bottom">
+                    <strong>{money(car.price)} <small>CAD</small></strong>
+                    <a aria-label={`Inquire about ${car.year} ${car.make} ${car.model}`} href={`mailto:${email}?subject=${encodeURIComponent(`Inquiry: ${car.year} ${car.make} ${car.model}`)}`}>Inquire <span aria-hidden="true">↗</span></a>
+                  </div>
+                </div>
+              </article>

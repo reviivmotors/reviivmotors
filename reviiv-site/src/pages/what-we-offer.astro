@@ -1,0 +1,41 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { phone, email } from '../data/inventory.ts';
+// Mission and vision are proposed brand copy, not quotations of published statements.
+// Public dealership listing: https://www.kijiji.ca/v-cars-trucks/mississauga-peel-region/2010-honda-pilot-ex-l/1742471900
+---
+<SiteLayout title="What We Offer | Reviiv Motors | Mississauga" description="Get to know Reviiv Motors in Mississauga: our approach, mission, vision, and support for your next pre-owned vehicle.">
+  <section class="offer-intro section" aria-labelledby="offer-title">
+    <div class="wrap">
+      <div class="breadcrumbs"><a href="/">Home</a><span aria-hidden="true">/</span><span>What We Offer</span></div>
+      <div class="offer-intro-grid">
+        <div>
+          <p class="kicker">GET TO KNOW REVIIV</p>
+          <h1 id="offer-title">A fresh perspective.<br /><em>A better drive.</em></h1>
+          <p class="offer-lead">A dealership experience built around you.</p>
+          <p class="offer-copy">Reviiv Motors is a pre-owned vehicle dealership at 1989 Dundas Street East in Mississauga. We believe the right vehicle starts with the right conversation: what you need, what matters to you, and what fits your life.</p>
+          <p class="offer-copy">Our approach is personal and straightforward. Take a closer look, ask questions, and speak with our team about the details before deciding on your next drive.</p>
+          <a class="btn btn-outline" href="/#contact">Meet us in Mississauga <span aria-hidden="true">↗</span></a>
+        </div>
+        <figure class="offer-brand-image"><img src="/lamborghini-purple.webp" alt="Purple Lamborghini Gallardo beside the waterfront" width="1536" height="1024" /><figcaption>REVIIV MOTORS · REVIVE YOUR DRIVE.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+  <section class="offer-purpose" aria-label="Our mission and vision">
+    <div class="wrap purpose-grid">
+      <article><p class="kicker">OUR MISSION</p><h2>Confidence in<br /><span>every conversation.</span></h2><p>To make finding a pre-owned vehicle more straightforward through clear information, personal attention, and guidance that puts your needs first.</p></article>
+      <article><p class="kicker">OUR VISION</p><h2>A dealership you'll<br /><span>come back to.</span></h2><p>To become a familiar, trusted name for drivers in Mississauga, building lasting relationships through transparency, care, and a shared love of the road.</p></article>
+    </div>
+  </section>
+  <section class="section offer-support" aria-labelledby="offer-support-title">
+    <div class="wrap">
+      <p class="kicker">HOW WE CAN HELP</p>
+      <h2 id="offer-support-title">Support for <span>your next step.</span></h2>
+      <div class="offer-service-list">
+        <article><div><h3>Finding the right fit</h3><p>Browse our current vehicles by body type. Ask for photographs, mileage, condition details, or a time to see a vehicle in person.</p><a class="btn btn-primary" href="/inventory/">Explore inventory ↗</a></div></article>
+        <article><div><h3>Understanding your options</h3><p>Talk to our team about available financing and how a trade-in could fit into your plans. We'll help you explore the next step.</p><a class="btn btn-primary" href={`mailto:${email}?subject=Vehicle%20options%20inquiry`}>Ask our team ↗</a></div></article>
+        <article><div><h3>Knowing the details</h3><p>Ask about the history and condition of a vehicle, its safety-certification status, and available extended warranty coverage before making your decision.</p><a class="btn btn-primary" href={`tel:+14163469568`}>Call {phone} ↗</a></div></article>
+      </div>
+    </div>
+  </section>
+</SiteLayout>

@@ -1,0 +1,35 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import BodyTypeLinks from './BodyTypeLinks.astro';
+import VehicleCard from './VehicleCard.astro';
+import { vehicles, email, type BodyType } from '../data/inventory.ts';
+interface Props { category?: BodyType }
+const { category } = Astro.props;
+const matching = category ? vehicles.filter((car) => car.category === category.label) : vehicles;
+const title = category ? `${category.plural} for Sale` : 'Our Inventory';
+---
+<SiteLayout title={`${title} | Reviiv Motors | Mississauga`} description={`Browse ${category ? category.plural.toLowerCase() : 'pre-owned vehicles'} at Reviiv Motors in Mississauga. Contact our team for vehicle details and availability.`}>
+  <section class="section inventory-page" aria-labelledby="inventory-page-title">
+    <div class="wrap">
+      <div class="breadcrumbs"><a href="/">Home</a><span aria-hidden="true">/</span>{category ? <><a href="/inventory/">Inventory</a><span aria-hidden="true">/</span><span>{category.plural}</span></> : <span>Inventory</span>}</div>
+      <p class="kicker">FIND YOUR NEXT DRIVE</p>
+      <h1 id="inventory-page-title" class="inventory-page-title">{category ? <>{category.plural} <em>for Sale.</em></> : <>Explore <em>Our Inventory.</em></>}</h1>
+      <p class="section-intro">{category ? `Explore our ${category.plural.toLowerCase()} or choose another body type below.` : 'Choose your body type. Find the vehicle that fits your life.'}</p>
+      <div class="inventory-category-heading"><h2>Browse by body type</h2>{category && <a href="/inventory/" class="text-link">View all vehicles ↗</a>}</div>
+      <BodyTypeLinks active={category?.slug} />
+      <div class="inventory-results-heading"><h2>{category ? category.plural : 'All Vehicles'}</h2><p>{matching.length} {matching.length === 1 ? 'vehicle' : 'vehicles'} listed</p></div>
+      {matching.length > 0 ? <>
+        <div class="inventory-grid">{matching.map((car) => <VehicleCard car={car} />)}</div>
+        <p class="inventory-footnote">Vehicles are subject to availability. Please contact us to confirm details and pricing.</p>
+      </> : <div class="inventory-empty">
+        <span class="kicker">YOUR NEXT DRIVE IS WORTH FINDING</span>
+        <h2>No vehicles available in this category yet.</h2>
+        <p>Looking for a specific vehicle? Contact our team to discuss what you have in mind, or explore our other available vehicles.</p>
+        <div class="hero-actions">
+          <a href="/inventory/" class="btn btn-primary">Browse All Vehicles <span aria-hidden="true">↗</span></a>
+          <a href={`mailto:${email}?subject=${encodeURIComponent(`Inquiry: ${category?.plural ?? 'available vehicles'}`)}`} class="btn btn-outline">Contact Our Team</a>
+        </div>
+      </div>}
+    </div>
+  </section>
+</SiteLayout>
