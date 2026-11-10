@@ -1,4 +1,5 @@
 ---
+import Icon from '../components/Icon.astro';
 import '../styles/site.css';
 const { title = 'Reviiv Motors | Revive Your Drive | Used Cars in Mississauga', description = 'Explore pre-owned vehicles at Reviiv Motors in Mississauga. Buy, sell, trade and ask about financing options.' } = Astro.props;
 const phone = '416-346-9568';
@@ -36,9 +37,9 @@ const phone = '416-346-9568';
           <a href="/#about">About</a>
           <a href="/#contact">Contact</a>
         </nav>
-        <a class="header-call" href="tel:+14163469568">Call Now <span aria-hidden="true">↗</span></a>
+        <a class="header-call" href="tel:+14163469568">Call Now <span aria-hidden="true"><Icon /></span></a>
         <details class="mobile-menu">
-          <summary aria-label="Open navigation menu">Menu <span aria-hidden="true">☰</span></summary>
+          <summary aria-label="Open navigation menu">Menu <span aria-hidden="true"><Icon name="menu" /></span></summary>
           <nav aria-label="Mobile navigation">
             <a href="/inventory/">Inventory</a>
             <a href="/what-we-offer/">What We Offer</a>
@@ -54,9 +55,9 @@ const phone = '416-346-9568';
 
     <footer class="footer">
       <div class="wrap footer-main">
-        <a class="footer-logo" href="/" aria-label="Reviiv Motors home"><img src="/reviiv-logo-poster.png" alt="Reviiv Motors" width="925" height="630" loading="lazy" /></a>
+        <div class="footer-brand"><a class="footer-logo" href="/" aria-label="Reviiv Motors home"><img src="/reviiv-logo-poster.png" alt="Reviiv Motors" width="925" height="630" loading="lazy" /></a><nav class="footer-quick-links" aria-label="Footer quick links"><a href="/inventory/">Inventory</a><a href="/what-we-offer/">What We Offer</a><a href="/#about">About</a><a href="/#contact">Contact</a></nav></div>
         <p>REVIVE YOUR DRIVE.<br /><span>BUY · SELL · TRADE · FINANCE</span></p>
-        <a href="#main-content" class="back-top">BACK TO TOP ↑</a>
+        <a href="#main-content" class="back-top">BACK TO TOP <Icon name="arrow-up" /></a>
       </div>
       <div class="wrap footer-bottom"><span>© {new Date().getFullYear()} Reviiv Motors. All rights reserved.</span><span>Mississauga, Ontario</span></div>
     </footer>

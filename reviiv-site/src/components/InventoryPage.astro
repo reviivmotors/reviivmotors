@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import BodyTypeLinks from './BodyTypeLinks.astro';
 import VehicleCard from './VehicleCard.astro';
@@ -15,7 +16,7 @@ const title = category ? `${category.plural} for Sale` : 'Our Inventory';
       <p class="kicker">FIND YOUR NEXT DRIVE</p>
       <h1 id="inventory-page-title" class="inventory-page-title">{category ? <>{category.plural} <em>for Sale.</em></> : <>Explore <em>Our Inventory.</em></>}</h1>
       <p class="section-intro">{category ? `Explore our ${category.plural.toLowerCase()} or choose another body type below.` : 'Choose your body type. Find the vehicle that fits your life.'}</p>
-      <div class="inventory-category-heading"><h2>Browse by body type</h2>{category && <a href="/inventory/" class="text-link">View all vehicles ↗</a>}</div>
+      <div class="inventory-category-heading"><h2>Browse by body type</h2>{category && <a href="/inventory/" class="text-link">View all vehicles <Icon /></a>}</div>
       <BodyTypeLinks active={category?.slug} />
       <div class="inventory-results-heading"><h2>{category ? category.plural : 'All Vehicles'}</h2><p>{matching.length} {matching.length === 1 ? 'vehicle' : 'vehicles'} listed</p></div>
       {matching.length > 0 ? <>
@@ -26,7 +27,7 @@ const title = category ? `${category.plural} for Sale` : 'Our Inventory';
         <h2>No vehicles available in this category yet.</h2>
         <p>Looking for a specific vehicle? Contact our team to discuss what you have in mind, or explore our other available vehicles.</p>
         <div class="hero-actions">
-          <a href="/inventory/" class="btn btn-primary">Browse All Vehicles <span aria-hidden="true">↗</span></a>
+          <a href="/inventory/" class="btn btn-primary">Browse All Vehicles <span aria-hidden="true"><Icon /></span></a>
           <a href={`mailto:${email}?subject=${encodeURIComponent(`Inquiry: ${category?.plural ?? 'available vehicles'}`)}`} class="btn btn-outline">Contact Our Team</a>
         </div>
       </div>}

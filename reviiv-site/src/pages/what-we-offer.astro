@@ -1,4 +1,5 @@
 ---
+import Icon from '../components/Icon.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { phone, email } from '../data/inventory.ts';
 // Mission and vision are proposed brand copy, not quotations of published statements.
@@ -15,7 +16,7 @@ import { phone, email } from '../data/inventory.ts';
           <p class="offer-lead">A dealership experience built around you.</p>
           <p class="offer-copy">Reviiv Motors is a pre-owned vehicle dealership at 1989 Dundas Street East in Mississauga. We believe the right vehicle starts with the right conversation: what you need, what matters to you, and what fits your life.</p>
           <p class="offer-copy">Our approach is personal and straightforward. Take a closer look, ask questions, and speak with our team about the details before deciding on your next drive.</p>
-          <a class="btn btn-outline" href="/#contact">Meet us in Mississauga <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-outline" href="/#contact">Meet us in Mississauga <span aria-hidden="true"><Icon /></span></a>
         </div>
         <figure class="offer-brand-image"><img src="/lamborghini-purple.webp" alt="Purple Lamborghini Gallardo beside the waterfront" width="1536" height="1024" /><figcaption>REVIIV MOTORS · REVIVE YOUR DRIVE.</figcaption></figure>
       </div>
@@ -32,9 +33,9 @@ import { phone, email } from '../data/inventory.ts';
       <p class="kicker">HOW WE CAN HELP</p>
       <h2 id="offer-support-title">Support for <span>your next step.</span></h2>
       <div class="offer-service-list">
-        <article><div><h3>Finding the right fit</h3><p>Browse our current vehicles by body type. Ask for photographs, mileage, condition details, or a time to see a vehicle in person.</p><a class="btn btn-primary" href="/inventory/">Explore inventory ↗</a></div></article>
-        <article><div><h3>Understanding your options</h3><p>Talk to our team about available financing and how a trade-in could fit into your plans. We'll help you explore the next step.</p><a class="btn btn-primary" href={`mailto:${email}?subject=Vehicle%20options%20inquiry`}>Ask our team ↗</a></div></article>
-        <article><div><h3>Knowing the details</h3><p>Ask about the history and condition of a vehicle, its safety-certification status, and available extended warranty coverage before making your decision.</p><a class="btn btn-primary" href={`tel:+14163469568`}>Call {phone} ↗</a></div></article>
+        <article><div><h3>Finding the right fit</h3><p>Browse our current vehicles by body type. Ask for photographs, mileage, condition details, or a time to see a vehicle in person.</p><a class="btn btn-primary" href="/inventory/">Explore inventory <Icon /></a></div></article>
+        <article><div><h3>Understanding your options</h3><p>Talk to our team about available financing and how a trade-in could fit into your plans. We'll help you explore the next step.</p><a class="btn btn-primary" href={`mailto:${email}?subject=Vehicle%20options%20inquiry`}>Ask our team <Icon /></a></div></article>
+        <article><div><h3>Knowing the details</h3><p>Ask about the history and condition of a vehicle, its safety-certification status, and available extended warranty coverage before making your decision.</p><a class="btn btn-primary" href={`tel:+14163469568`}>Call {phone} <Icon /></a></div></article>
       </div>
     </div>
   </section>
