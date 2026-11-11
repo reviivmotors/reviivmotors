@@ -1,1 +1,25 @@
-{"year":2013,"make":"Acura","model":"ILX","price":10990,"category":"Sedan","status":"Available","published":true,"featured":true,"order":3,"photos":[],"description":""}
+{
+  "status": "Available",
+  "published": true,
+  "featured": true,
+  "year": 2013,
+  "make": "Acura",
+  "model": "ILX",
+  "category": "Sedan",
+  "price": 9999,
+  "photos": [
+    "/uploads/vehicles/mwbmclcz-i9n1wt45.jpg",
+    "/uploads/vehicles/mwbmcxtx-he8cuu5e.jpg",
+    "/uploads/vehicles/mwbmd2ix-g8gwk8sp.jpg",
+    "/uploads/vehicles/mwbmd05j-bbnx857o.jpg",
+    "/uploads/vehicles/mwbmcvjb-dnx6ew1l.jpg",
+    "/uploads/vehicles/mwbmcsrn-i0gw06qb.jpg",
+    "/uploads/vehicles/mwbmcqbt-x59hnyeu.jpg"
+  ],
+  "mileage": 158626,
+  "transmission": "Automatic",
+  "fuel": "Gasoline",
+  "colour": "Brown",
+  "description": "Safety! 2013 Acura ILX | 159,685 KM\nClean, stylish, and fuel-efficient Acura ILX with a comfortable leather interior and great features. A great daily driver with Acura reliability!\nLeather Interior\nHeated Seats\nPower Sunroof\nBluetooth\nKeyless Entry & Push-Button Start\nAlloy Wheels\nComes SAFETIED!\nREVIIV Motors Inc",
+  "order": 3
+}
