@@ -1,0 +1,92 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { vehicles, money, phone, email, type Vehicle } from '../../data/inventory';
+export function getStaticPaths() {
+  return vehicles.map((car) => ({ params: { slug: car.slug }, props: { car } }));
+}
+interface Props { car: Vehicle }
+const { car } = Astro.props;
+const name = `${car.year} ${car.make} ${car.model}`;
+const sold = car.status === 'Sold';
+const specifications = [
+  ['Body type', car.category], ['Mileage', car.mileage != null ? `${car.mileage.toLocaleString('en-CA')} km` : null],
+  ['Transmission', car.transmission], ['Fuel', car.fuel], ['Exterior colour', car.colour], ['Stock number', car.stockNumber],
+].filter(([, value]) => value);
+---
+<SiteLayout title={`${name}${sold ? ' — Sold' : ''} | Reviiv Motors`} description={`${name} at Reviiv Motors in Mississauga. ${sold ? 'This vehicle has been sold. Explore our other vehicles.' : 'View photos and contact us for details and availability.'}`}>
+  <section class="section vehicle-detail">
+    <div class="wrap">
+      <div class="breadcrumbs"><a href="/">Home</a><span>/</span><a href="/inventory/">Inventory</a><span>/</span><span>{name}</span></div>
+      {sold && <div class="detail-sold-notice"><strong>SOLD</strong><span>This vehicle has found its next driver. <a href="/inventory/">Explore our other vehicles.</a></span></div>}
+      <div class="detail-grid">
+        <div class="detail-gallery">
+          <div class="detail-cover">
+            {car.photos.length ? <a class="detail-full-photo" href={car.photos[0]} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size photo of ${name}`}><img id="vehicle-main-photo" src={car.photos[0]} alt={`${name} — photo 1`} width="1200" height="800" /></a> : <div class="detail-placeholder"><strong>REVIIV <span>MOTORS</span></strong><p>Vehicle photos coming soon</p></div>}
+            {sold && <span class="detail-sold-banner">SOLD</span>}
+          </div>
+          {car.photos.length > 1 && <div class="detail-thumbnails" aria-label="Vehicle photos">{car.photos.map((photo, index) => <button type="button" data-photo={photo} data-photo-index={index + 1} aria-label={`View photo ${index + 1} of ${name}`} aria-pressed={index === 0 ? 'true' : 'false'}><img src={photo} alt="" width="160" height="110" loading="lazy" /></button>)}</div>}
+          {car.photos.length > 0 && <p class="detail-photo-hint">Select a thumbnail to view a photo. Select the main photo to open it full size.</p>}
+        </div>
+        <div class="detail-copy">
+          <p class="kicker">{car.category} · {car.status.toUpperCase()}</p>
+          <h1>{car.year} {car.make}<br /><em>{car.model}</em></h1>
+          <p class="detail-price">{money(car.price)} <small>CAD{sold ? ' · last listed price' : ''}</small></p>
+          <dl>{specifications.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+          {car.description && <p class="detail-description">{car.description}</p>}
+          <div class="detail-actions">
+            {sold ? <a class="btn btn-primary" href="/inventory/">Browse Inventory <Icon /></a> : <a class="btn btn-primary" href={`mailto:${email}?subject=${encodeURIComponent(`Inquiry: ${name}`)}`}>Inquire About This Vehicle <Icon /></a>}
+            <a class="btn btn-outline" href="tel:+14163469568">Call {phone}</a>
+          </div>
+          <p class="inventory-footnote">{sold ? 'This listing is retained as a sold vehicle.' : 'Please contact us to confirm vehicle details, condition, and availability.'}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .vehicle-detail { padding-top: 36px; }
+  .detail-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: start; }
+  .detail-gallery, .detail-copy { min-width: 0; }
+  .detail-cover { position: relative; border: 1px solid #302d35; border-radius: 10px; overflow: hidden; background: #151317; }
+  .detail-full-photo { display: block; }
+  .detail-cover img { width: 100%; aspect-ratio: 3/2; height: auto; object-fit: contain; display: block; }
+  .detail-placeholder { min-height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(ellipse, #28232f, #111013); }
+  .detail-placeholder strong { font-size: clamp(24px, 3vw, 40px); font-style: italic; }
+  .detail-placeholder strong span { color: #c084f7; }
+  .detail-placeholder p { color: #aaa1b1; font-size: 12px; }
+  .detail-sold-banner { position: absolute; top: 20px; right: 0; padding: 12px 28px; background: #bc202c; color: #fff; font-size: 15px; font-weight: 900; letter-spacing: 2px; }
+  .detail-sold-notice { padding: 18px 22px; background: #43151d; border: 1px solid #a93240; border-radius: 7px; display: flex; align-items: center; gap: 20px; margin-bottom: 28px; font-size: 14px; line-height: 1.7; }
+  .detail-sold-notice strong { color: #ff8d99; letter-spacing: 2px; }
+  .detail-sold-notice a { text-decoration: underline; text-underline-offset: 3px; }
+  .detail-thumbnails { display: flex; gap: 10px; overflow-x: auto; padding: 12px 2px 4px; }
+  .detail-thumbnails button { flex: 0 0 90px; border: 2px solid transparent; border-radius: 5px; padding: 0; background: #151317; cursor: pointer; overflow: hidden; }
+  .detail-thumbnails button[aria-pressed="true"] { border-color: #c084f7; }
+  .detail-thumbnails img { width: 100%; height: 62px; object-fit: cover; display: block; }
+  .detail-photo-hint { color: #a99faf; font-size: 11px; line-height: 1.6; }
+  .detail-copy h1 { font-size: clamp(32px, 4vw, 52px); letter-spacing: -1.5px; line-height: 1.12; }
+  .detail-price { color: #d6a4ff; font-size: 32px; font-weight: 850; }
+  .detail-price small { font-size: 11px; color: #aaa1b1; font-weight: 600; }
+  dl { margin: 25px 0; }
+  dl > div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #302d35; font-size: 13px; }
+  dt { color: #aaa1b1; } dd { margin: 0; text-align: right; }
+  .detail-description { color: #ccc5d2; white-space: pre-line; line-height: 1.8; font-size: 14px; }
+  .detail-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  button:focus-visible, a:focus-visible { outline: 2px solid #c084f7; outline-offset: 3px; }
+  @media (max-width: 800px) { .detail-grid { grid-template-columns: 1fr; gap: 28px; } .detail-sold-notice { align-items: flex-start; flex-direction: column; gap: 6px; } }
+  @media (max-width: 430px) { .detail-actions .btn { width: 100%; } .detail-placeholder { min-height: 230px; } }
+</style>
+
+<script>
+  const mainPhoto = document.querySelector<HTMLImageElement>('#vehicle-main-photo');
+  const fullPhoto = document.querySelector<HTMLAnchorElement>('.detail-full-photo');
+  const thumbnails = document.querySelectorAll<HTMLButtonElement>('.detail-thumbnails button');
+  thumbnails.forEach((button) => button.addEventListener('click', () => {
+    if (!mainPhoto || !fullPhoto || !button.dataset.photo) return;
+    mainPhoto.src = button.dataset.photo;
+    fullPhoto.href = button.dataset.photo;
+    mainPhoto.alt = mainPhoto.alt.replace(/ — photo \d+$/, '') + ` — photo ${button.dataset.photoIndex}`;
+    thumbnails.forEach((thumbnail) => thumbnail.setAttribute('aria-pressed', String(thumbnail === button)));
+  }));
+</script>

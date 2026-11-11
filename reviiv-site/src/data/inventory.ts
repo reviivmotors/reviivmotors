@@ -1,4 +1,4 @@
-// Update inventory here to keep the homepage and category pages in sync.
+// Inventory is managed through the private Pages CMS dashboard.
 export const bodyTypes = [
   { slug: 'sedan', image: 'https://images.ctfassets.net/rjpp1vai5vu3/7wl2mkpKiCi2VYnJbh6LS0/a6480e94b9302a44660f109f0992dc31/BMW_3-sarja.png?fit=fill&fm=webp&q=80&w=640', imageAlt: 'BMW 3 Series side profile', label: 'Sedan', plural: 'Sedans', shape: 'M14 61 L24 51 L56 46 L79 27 L124 27 L150 47 L180 52 L189 62 L189 73 L14 73 Z', windows: 'M67 45 L83 32 L121 32 L139 46 Z M103 32 L103 46' },
   { slug: 'suv', image: 'https://toyotacanada.scene7.com/is/image/toyotacanada/b26_gzrbht_pl_0089_a?fmt=png-alpha&wid=640', imageAlt: 'Toyota Highlander side profile', label: 'SUV', plural: 'SUVs', shape: 'M13 57 L22 44 L57 41 L73 20 L164 20 L178 40 L189 47 L191 73 L13 73 Z', windows: 'M67 40 L78 25 L158 25 L168 41 Z M107 25 L107 41 M139 25 L139 41' },
@@ -9,12 +9,33 @@ export const bodyTypes = [
 ] as const;
 
 export type BodyType = typeof bodyTypes[number];
-export type Vehicle = { year: number; make: string; model: string; price: number; category: BodyType['label']; number: string };
-export const vehicles: Vehicle[] = [
-  { year: 2017, make: 'Nissan', model: 'Sentra SV', price: 5990, category: 'Sedan', number: '01' },
-  { year: 2011, make: 'Honda', model: 'Odyssey', price: 6990, category: 'Minivan', number: '02' },
-  { year: 2013, make: 'Acura', model: 'ILX', price: 10990, category: 'Sedan', number: '03' },
-];
+export type Vehicle = {
+  slug: string; year: number; make: string; model: string; price: number;
+  category: BodyType['label']; number: string; status: 'Available' | 'Sold';
+  published: boolean; featured: boolean; order: number; photos: string[];
+  description: string; mileage?: number; transmission?: string; fuel?: string;
+  colour?: string; stockNumber?: string;
+};
+type VehicleEntry = Omit<Vehicle, 'slug' | 'number'>;
+const entries = import.meta.glob<VehicleEntry>('./vehicles/*.json', { eager: true, import: 'default' });
+export const allVehicles: Vehicle[] = Object.entries(entries).map(([file, data]) => {
+  const slug = file.split('/').pop()!.replace(/\.json$/, '');
+  const fail = (message: string): never => { throw new Error(`Inventory ${slug}: ${message}`); };
+  if (!Number.isInteger(data.year) || data.year < 1900 || data.year > 2100) fail('Enter a valid model year.');
+  if (typeof data.make !== 'string' || !data.make.trim() || typeof data.model !== 'string' || !data.model.trim()) fail('Make and model are required.');
+  if (!Number.isFinite(data.price) || data.price < 0) fail('Price must be a non-negative number.');
+  if (!bodyTypes.some((type) => type.label === data.category)) fail('Choose one of the six body types.');
+  if (data.status !== 'Available' && data.status !== 'Sold') fail('Status must be Available or Sold.');
+  if (data.mileage != null && (!Number.isFinite(data.mileage) || data.mileage < 0)) fail('Mileage must be a non-negative number.');
+  const photos = data.photos ?? [];
+  if (!Array.isArray(photos) || photos.some((photo) => typeof photo !== 'string' || !photo.startsWith('/uploads/vehicles/') || photo.includes('..'))) fail('Photos must come from the vehicle photo library.');
+  return { ...data, slug, make: data.make.trim(), model: data.model.trim(), photos,
+    published: data.published !== false, featured: data.featured !== false,
+    order: Number.isFinite(data.order) ? data.order : 100, description: data.description ?? '', number: '' };
+}).sort((a, b) => a.order - b.order || a.slug.localeCompare(b.slug))
+  .map((car, index) => ({ ...car, number: String(index + 1).padStart(2, '0') }));
+export const vehicles = allVehicles.filter((car) => car.published);
+export const featuredVehicles = vehicles.filter((car) => car.featured);
 export const phone = '416-346-9568';
 export const email = 'reviivmotors@gmail.com';
 export const money = (amount: number) => new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(amount);

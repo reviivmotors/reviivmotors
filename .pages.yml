@@ -1,0 +1,109 @@
+media:
+  input: reviiv-site/public/uploads/vehicles
+  output: /uploads/vehicles
+  categories: [image]
+  extensions: [jpg, jpeg, png, webp]
+  rename: random
+
+content:
+  - name: vehicles
+    label: Vehicle Inventory
+    type: collection
+    path: reviiv-site/src/data/vehicles
+    format: json
+    subfolders: false
+    filename:
+      template: "{fields.year}-{fields.make}-{fields.model}-{hour}{minute}{second}.json"
+      field: false
+    operations:
+      create: true
+      rename: false
+      delete: false
+    view:
+      primary: model
+      fields: [year, make, model, status, price, published]
+      sort: [order, year, make, model, status, price]
+      search: [make, model, stockNumber]
+      default:
+        sort: order
+        order: asc
+    fields:
+      - name: status
+        label: Status
+        type: select
+        required: true
+        default: Available
+        description: "Sold keeps the listing visible with a red SOLD banner. Switch back to Available to undo it. Save to update the site after its automatic rebuild."
+        options:
+          values: [Available, Sold]
+      - name: published
+        label: Show on website
+        type: boolean
+        default: true
+        description: "Turn off to hide this car without deleting it. Turn back on to restore it."
+      - name: featured
+        label: Featured on homepage
+        type: boolean
+        default: true
+      - name: year
+        label: Model year
+        type: number
+        required: true
+        options: { min: 1900, max: 2100 }
+      - name: make
+        label: Make
+        type: string
+        required: true
+      - name: model
+        label: Model and trim
+        type: string
+        required: true
+      - name: category
+        label: Body type
+        type: select
+        required: true
+        options:
+          values: [Sedan, SUV, Coupe, Hatchback, Minivan, Pickup Truck]
+      - name: price
+        label: Price (CAD)
+        type: number
+        required: true
+        options: { min: 0 }
+      - name: photos
+        label: Vehicle photos
+        type: image
+        description: "Upload JPG, PNG or WebP photos. The first photo is the cover; all photos appear on the vehicle page."
+        options:
+          multiple: { max: 20 }
+          unique: true
+          extensions: [jpg, jpeg, png, webp]
+          rename: random
+      - name: mileage
+        label: Mileage (km)
+        type: number
+        options: { min: 0 }
+      - name: transmission
+        label: Transmission
+        type: select
+        options:
+          values: [Automatic, Manual, CVT, Other]
+      - name: fuel
+        label: Fuel type
+        type: select
+        options:
+          values: [Gasoline, Diesel, Hybrid, Plug-in Hybrid, Electric, Other]
+      - name: colour
+        label: Exterior colour
+        type: string
+      - name: stockNumber
+        label: Stock number
+        type: string
+      - name: description
+        label: Vehicle description
+        type: text
+      - name: order
+        label: Display order
+        type: number
+        default: 100
+        description: "Lower numbers appear first. Leave at 100 for new arrivals."
+        options: { min: 0 }

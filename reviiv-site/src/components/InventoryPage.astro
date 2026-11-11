@@ -7,6 +7,8 @@ import { vehicles, email, type BodyType } from '../data/inventory.ts';
 interface Props { category?: BodyType }
 const { category } = Astro.props;
 const matching = category ? vehicles.filter((car) => car.category === category.label) : vehicles;
+const availableCount = matching.filter((car) => car.status === 'Available').length;
+const soldCount = matching.length - availableCount;
 const title = category ? `${category.plural} for Sale` : 'Our Inventory';
 ---
 <SiteLayout title={`${title} | Reviiv Motors | Mississauga`} description={`Browse ${category ? category.plural.toLowerCase() : 'pre-owned vehicles'} at Reviiv Motors in Mississauga. Contact our team for vehicle details and availability.`}>
@@ -18,7 +20,7 @@ const title = category ? `${category.plural} for Sale` : 'Our Inventory';
       <p class="section-intro">{category ? `Explore our ${category.plural.toLowerCase()} or choose another body type below.` : 'Choose your body type. Find the vehicle that fits your life.'}</p>
       <div class="inventory-category-heading"><h2>Browse by body type</h2>{category && <a href="/inventory/" class="text-link">View all vehicles <Icon /></a>}</div>
       <BodyTypeLinks active={category?.slug} />
-      <div class="inventory-results-heading"><h2>{category ? category.plural : 'All Vehicles'}</h2><p>{matching.length} {matching.length === 1 ? 'vehicle' : 'vehicles'} listed</p></div>
+      <div class="inventory-results-heading"><h2>{category ? category.plural : 'All Vehicles'}</h2><p>{availableCount} available{soldCount > 0 && ` · ${soldCount} sold`}</p></div>
       {matching.length > 0 ? <>
         <div class="inventory-grid">{matching.map((car) => <VehicleCard car={car} />)}</div>
         <p class="inventory-footnote">Vehicles are subject to availability. Please contact us to confirm details and pricing.</p>

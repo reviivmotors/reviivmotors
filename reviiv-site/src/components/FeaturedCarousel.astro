@@ -1,9 +1,9 @@
 ---
 import VehicleCard from './VehicleCard.astro';
-import { vehicles } from '../data/inventory';
+import { featuredVehicles as vehicles } from '../data/inventory';
 ---
 
-<div class="featured-carousel" role="region" aria-roledescription="carousel" aria-label="Featured vehicles">
+{vehicles.length > 0 ? <div class="featured-carousel" role="region" aria-roledescription="carousel" aria-label="Featured vehicles">
   <div class="carousel-track" id="featured-vehicle-track" tabindex="0" aria-label="Swipe left or use arrow keys to browse vehicles">
     {vehicles.map((car, index) => (
       <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${vehicles.length}`}>
@@ -11,7 +11,7 @@ import { vehicles } from '../data/inventory';
       </div>
     ))}
   </div>
-  <div class="carousel-controls">
+  {vehicles.length > 1 && <div class="carousel-controls">
     <button class="carousel-arrow carousel-prev" type="button" aria-label="Previous vehicle" aria-controls="featured-vehicle-track" disabled>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7" /></svg>
     </button>
@@ -24,9 +24,9 @@ import { vehicles } from '../data/inventory';
     <button class="carousel-arrow carousel-next" type="button" aria-label="Next vehicle" aria-controls="featured-vehicle-track">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M4 12h16m-7-7 7 7-7 7" /></svg>
     </button>
-  </div>
+  </div>}
   <p class="sr-only carousel-status" aria-live="polite" aria-atomic="true"></p>
-</div>
+</div> : <p class="inventory-footnote">New arrivals are on the way. <a href="/inventory/">Browse our inventory.</a></p>}
 
 <style>
   .featured-carousel { max-width: 960px; margin-inline: auto; }
@@ -78,7 +78,7 @@ import { vehicles } from '../data/inventory';
 
 <script>
   const carousel = document.querySelector<HTMLElement>('.featured-carousel');
-  if (carousel) {
+  if (carousel && carousel.querySelectorAll('.carousel-slide').length > 1) {
     const track = carousel.querySelector<HTMLElement>('.carousel-track')!;
     const slides = [...carousel.querySelectorAll<HTMLElement>('.carousel-slide')];
     const dots = [...carousel.querySelectorAll<HTMLButtonElement>('.carousel-dot')];
@@ -114,27 +114,37 @@ import { vehicles } from '../data/inventory';
     let drag: { x: number; left: number; moved: boolean } | null = null;
     track.addEventListener('pointerdown', (event) => {
       interact();
-      if (event.pointerType !== 'mouse' || event.button !== 0 || (event.target as HTMLElement).closest('a,button')) return;
+      if (event.pointerType !== 'mouse' || event.button !== 0 || (event.target as HTMLElement).closest('.vehicle-info a,button')) return;
       drag = { x: event.clientX, left: track.scrollLeft, moved: false };
-      track.classList.add('is-dragging');
-      track.setPointerCapture(event.pointerId);
+      track.classList.remove('suppress-photo-click');
     });
     track.addEventListener('pointermove', (event) => {
       if (!drag) return;
       const delta = event.clientX - drag.x;
-      if (Math.abs(delta) > 5) drag.moved = true;
+      if (Math.abs(delta) > 5) {
+        drag.moved = true;
+        track.classList.add('is-dragging', 'suppress-photo-click');
+        if (!track.hasPointerCapture(event.pointerId)) track.setPointerCapture(event.pointerId);
+      }
       track.scrollLeft = drag.left - delta;
     });
     const finishDrag = () => {
       if (!drag) return;
       const delta = track.scrollLeft - drag.left;
       const start = Math.round(drag.left / track.clientWidth);
+      const moved = drag.moved;
       drag = null;
       track.classList.remove('is-dragging');
-      goTo(start + (Math.abs(delta) > track.clientWidth * .15 ? Math.sign(delta) : 0));
+      if (moved) goTo(start + (Math.abs(delta) > track.clientWidth * .15 ? Math.sign(delta) : 0));
     };
     track.addEventListener('pointerup', finishDrag);
     track.addEventListener('pointercancel', finishDrag);
+    track.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('.vehicle-photo') && track.classList.contains('suppress-photo-click')) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }, true);
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((entry) => entry.isIntersecting)) {
         carousel.classList.add('is-discovered');

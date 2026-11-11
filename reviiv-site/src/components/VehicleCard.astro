@@ -3,19 +3,42 @@ import Icon from './Icon.astro';
 import { money, email, type Vehicle } from '../data/inventory.ts';
 interface Props { car: Vehicle }
 const { car } = Astro.props;
+const name = `${car.year} ${car.make} ${car.model}`;
+const detailUrl = `/vehicles/${car.slug}/`;
+const sold = car.status === 'Sold';
 ---
-              <article class="vehicle-card">
-                <div class="vehicle-photo">
+              <article class:list={['vehicle-card', { 'vehicle-sold': sold }]}>
+                <a class:list={['vehicle-photo', { 'has-vehicle-image': car.photos.length > 0 }]} href={detailUrl} aria-label={`View ${name}${sold ? ' — sold' : ''}`} draggable="false">
+                  {car.photos.length > 0 ? <img class="listing-image" src={car.photos[0]} alt={name} width="1200" height="800" loading="lazy" draggable="false" /> : <>
+                    <div class="placeholder-wordmark">REVIIV <span>MOTORS</span></div>
+                    <span class="photo-note">VEHICLE PHOTOS COMING SOON</span>
+                  </>}
                   <span class="vehicle-index">{car.number} / INVENTORY</span>
-                  <div class="placeholder-wordmark">REVIIV <span>MOTORS</span></div>
-                  <span class="photo-note">VEHICLE PHOTOS COMING SOON</span>
-                </div>
+                  {sold && <span class="sold-banner">SOLD</span>}
+                  {car.photos.length > 0 && <span class="vehicle-photo-count">{car.photos.length} {car.photos.length === 1 ? 'photo' : 'photos'}</span>}
+                </a>
                 <div class="vehicle-info">
                   <div class="vehicle-meta"><span>{car.category}</span><span>{car.year}</span></div>
-                  <h3>{car.year} {car.make} {car.model}</h3>
+                  <h3><a href={detailUrl}>{name}</a></h3>
+                  {car.mileage != null && <p class="vehicle-mileage">{car.mileage.toLocaleString('en-CA')} km</p>}
                   <div class="vehicle-bottom">
                     <strong>{money(car.price)} <small>CAD</small></strong>
-                    <a aria-label={`Inquire about ${car.year} ${car.make} ${car.model}`} href={`mailto:${email}?subject=${encodeURIComponent(`Inquiry: ${car.year} ${car.make} ${car.model}`)}`}>Inquire <span aria-hidden="true"><Icon /></span></a>
+                    {sold ? <span class="vehicle-sold-label">Sold</span> : <a aria-label={`Inquire about ${name}`} href={`mailto:${email}?subject=${encodeURIComponent(`Inquiry: ${name}`)}`}>Inquire <span aria-hidden="true"><Icon /></span></a>}
                   </div>
+                  <a class="vehicle-details-link" href={detailUrl}>View details &amp; photos <Icon /></a>
                 </div>
               </article>
+
+<style>
+  .vehicle-photo { text-decoration: none; color: inherit; }
+  .listing-image { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .has-vehicle-image::after { display: none; }
+  .has-vehicle-image .vehicle-index { color: #fff; background: #111c; padding: 5px 8px; border-radius: 4px; }
+  .sold-banner { position: absolute; right: 0; top: 18px; z-index: 2; background: #bc202c; color: #fff; padding: 10px 24px; border-radius: 4px 0 0 4px; font-size: 13px; font-weight: 900; letter-spacing: 2px; box-shadow: 0 4px 14px #0003; }
+  .vehicle-photo-count { position: absolute; right: 14px; bottom: 14px; padding: 6px 10px; color: #fff; background: #111c; border-radius: 4px; font-size: 11px; font-weight: 700; }
+  .vehicle-sold-label { color: #d63845; font-size: 12px; font-weight: 850; text-transform: uppercase; letter-spacing: 1px; }
+  .vehicle-mileage { margin: -10px 0 18px; font-size: 13px; color: #82768c; }
+  .vehicle-details-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 8px; color: #9964bf; font-size: 12px; font-weight: 750; }
+  h3 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  a:focus-visible { outline: 2px solid #a662d5; outline-offset: -3px; }
+</style>
