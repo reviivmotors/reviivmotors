@@ -1,1 +1,12 @@
-{"year":2017,"make":"Nissan","model":"Sentra SV","price":5990,"category":"Sedan","status":"Available","published":true,"featured":true,"order":1,"photos":[],"description":""}
+{
+  "status": "Available",
+  "published": true,
+  "featured": true,
+  "year": 2017,
+  "make": "Nissan",
+  "model": "Sentra SV",
+  "category": "Sedan",
+  "price": 5990,
+  "description": "Contact our team to confirm mileage, condition, and availability.",
+  "order": 1
+}
