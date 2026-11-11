@@ -1,1 +1,27 @@
-{"year":2011,"make":"Honda","model":"Odyssey","price":6990,"category":"Minivan","status":"Available","published":true,"featured":true,"order":2,"photos":[],"description":""}
+{
+  "status": "Sold",
+  "published": true,
+  "featured": false,
+  "year": 2011,
+  "make": "Honda",
+  "model": "Odyssey",
+  "category": "Minivan",
+  "price": 6990,
+  "photos": [
+    "/uploads/vehicles/mwblsx5r-8vtl7nmq.jpg",
+    "/uploads/vehicles/mwbltyke-7swyqj5g.jpg",
+    "/uploads/vehicles/mwblsavi-6zf6cm2l.jpg",
+    "/uploads/vehicles/mwblslpy-am19h7v3.jpg",
+    "/uploads/vehicles/mwblugjd-1y1wayyw.jpg",
+    "/uploads/vehicles/mwblrsvi-q4h9l8ki.jpg",
+    "/uploads/vehicles/mwblvhc0-rmifk1fh.jpg",
+    "/uploads/vehicles/mwblutrj-dn4cf8oq.jpg",
+    "/uploads/vehicles/mwbluzo9-v0is6u6n.jpg"
+  ],
+  "mileage": 285235,
+  "transmission": "Automatic",
+  "fuel": "Gasoline",
+  "colour": "Grey",
+  "description": "2011 Honda Odyssey Touring | 8 Passenger | Loaded | Family Minivan\nPrice: $5,999 + HST and Licensing\nMileage: 285,289 KM\nTrim: Touring\nTransmission: Automatic\nVehicle Highlights:\nPowerful 3.5L V6 Engine\n8-Passenger Seating\nTouring Trim with Premium Features\nLeather Interior\nHeated Front Seats\nPower Sunroof\nPower Sliding Doors\nPower Tailgate\nBackup Camera\nNavigation System\nBluetooth Connectivity\nRear Entertainment System\nTri-Zone Climate Control\nPower Adjustable Front Seats with Memory Function\nKeyless Entry with Push Button Start\nAlloy Wheels\nSpacious Interior with Fold-Flat Rear Seating\nExcellent Family Vehicle with Ample Cargo Space\nCondition:\nRuns and drives well. Clean interior and exterior. Strong engine and smooth transmission. Well-maintained family vehicle with plenty of space and comfort.\nSafety available for $999 + HST.\nImportant Disclosure:\nThis vehicle is being sold AS-IS and is not represented as being in roadworthy condition, mechanically sound, or maintained at any guaranteed level of quality. It may not be fit for use as a means of transportation and may require substantial repairs at the purchaser’s expense.\nBuy with Confidence:\nPurchase from a trustworthy OMVIC-Registered Dealer and UCDA Member, ensuring transparency and professionalism throughout your buying experience.\nContact Information:\nReviiv Motors\n1989 Dundas St E, Mississauga, ON, L4X 2T8\nCall or Text: 416-346-9568\nEmail: REVIIVMotors@gmail.com\nBook an appointment today. Call, text, or email to schedule a test drive or come see the vehicle in person",
+  "order": 4
+}
