@@ -1,9 +1,10 @@
 ---
 import Icon from '../components/Icon.astro';
+import DriveReveal from '../components/DriveReveal.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
-import VehicleCard from '../components/VehicleCard.astro';
+import FeaturedCarousel from '../components/FeaturedCarousel.astro';
 import BodyTypeLinks from '../components/BodyTypeLinks.astro';
-import { vehicles, phone, email } from '../data/inventory.ts';
+import { phone, email } from '../data/inventory.ts';
 import { openingHours } from '../data/business.ts';
 const hasOpeningHours = openingHours.some(({ hours }) => hours !== null);
 ---
@@ -56,9 +57,7 @@ const hasOpeningHours = openingHours.some(({ hours }) => hours !== null);
             </div>
             <a class="text-link" href="#contact">Ask about a vehicle <span aria-hidden="true"><Icon /></span></a>
           </div>
-          <div class="inventory-grid">
-            {vehicles.map((car) => <VehicleCard car={car} />)}
-          </div>
+          <FeaturedCarousel />
           <p class="inventory-footnote">Vehicles are subject to availability. Please contact us to confirm details and pricing.</p>
         </div>
       </section>
@@ -100,12 +99,7 @@ const hasOpeningHours = openingHours.some(({ hours }) => hours !== null);
         </div>
       </section>
 
-      <section class="cta-section" aria-labelledby="cta-title">
-        <div class="wrap cta-inner">
-          <div><p class="kicker">READY FOR WHAT'S NEXT?</p><h2 id="cta-title">Your next drive<br /><span>starts here.</span></h2></div>
-          <a class="btn btn-light" href="tel:+14163469568">Call {phone} <span aria-hidden="true"><Icon /></span></a>
-        </div>
-      </section>
+      <DriveReveal />
 
       <section id="contact" class="section contact-section" aria-labelledby="contact-title">
         <div class="wrap">

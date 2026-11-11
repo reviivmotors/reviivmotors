@@ -1,0 +1,113 @@
+---
+import Icon from './Icon.astro';
+import { phone } from '../data/inventory';
+---
+
+<section id="next-drive" class="drive-reveal is-animated" aria-labelledby="cta-title">
+  <div class="drive-pin">
+  <div class="drive-stage">
+    <div class="drive-glow" aria-hidden="true"></div>
+    <div class="drive-message wrap">
+      <p class="kicker">READY FOR WHAT'S NEXT?</p>
+      <h2 id="cta-title">Your next drive<br /><span>starts here.</span></h2>
+      <a class="btn btn-light" href="tel:+14163469568">Call {phone} <span aria-hidden="true"><Icon /></span></a>
+    </div>
+    <div class="drive-road" aria-hidden="true"></div>
+    <div class="drive-car" aria-hidden="true">
+      <img src="/lamborghini-black-side.png" alt="" width="2172" height="724" loading="eager" decoding="async" />
+    </div>
+    <p class="drive-hint" aria-hidden="true">SCROLL TO START YOUR NEXT CHAPTER <Icon name="arrow-down" /></p>
+  </div>
+  </div>
+</section>
+
+<noscript><style is:global>
+  .drive-reveal.is-animated { height: auto; }
+  .drive-reveal .drive-pin { position: static; height: auto; }
+  .drive-reveal .drive-message { opacity: 1; transform: none; }
+  .drive-reveal .drive-car, .drive-reveal .drive-hint { display: none; }
+</style></noscript>
+
+<style>
+  .drive-reveal { --pin-top: 80px; --drive-distance: min(72svh, 600px); position: relative; scroll-margin-top: var(--pin-top); background: #0c0c0e; }
+  .drive-stage { position: relative; width: 100%; min-height: 440px; display: grid; place-items: center; isolation: isolate; overflow: hidden; border-block: 1px solid #8b53b1; background: linear-gradient(110deg, #542080, #7434a0 58%, #4b1d70); }
+  .drive-glow { position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 75%, #e5b4ff24, transparent 65%); }
+  .drive-message { position: relative; z-index: 1; text-align: center; padding-block: 48px; }
+  .drive-message .kicker { color: #e9c9ff; letter-spacing: 2.5px; }
+  .drive-message h2 { font-size: clamp(42px, 6.5vw, 84px); line-height: 1.08; letter-spacing: -.045em; }
+  .drive-message h2 span { color: #f1d7ff; }
+  .drive-message .btn { margin-top: 28px; }
+  .drive-car { display: none; position: absolute; z-index: 2; width: min(900px, 88vw); left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; filter: drop-shadow(0 22px 12px #180b2c88); }
+  .drive-car img { display: block; width: 100%; height: auto; }
+  .drive-road { position: absolute; left: 0; right: 0; top: 83%; height: 1px; background: linear-gradient(90deg, transparent, #e7c5ff45, transparent); }
+  .drive-hint { display: none; position: absolute; bottom: 12px; left: 16px; right: 16px; justify-content: center; align-items: center; gap: 12px; color: #e5c4f6; font-size: 9px; font-weight: 700; letter-spacing: 2px; }
+  .drive-reveal.is-animated { height: calc(100svh - var(--pin-top) + var(--drive-distance)); }
+  .is-animated .drive-pin { position: sticky; top: var(--pin-top); height: calc(100svh - var(--pin-top)); display: grid; align-items: center; }
+  .is-animated .drive-car { display: block; will-change: transform; }
+  .is-animated .drive-message { opacity: var(--message-opacity, 0); transform: translateY(var(--message-offset, 24px)); will-change: opacity, transform; }
+  .is-animated .drive-hint { display: flex; opacity: var(--hint-opacity, 1); }
+  .is-animated .drive-message:focus-within { opacity: 1; transform: none; }
+  .drive-stage:has(.btn:focus-visible) .drive-car { opacity: 0; }
+  @media (max-width: 700px) {
+    .drive-reveal { --pin-top: 70px; --drive-distance: min(72svh, 480px); }
+    .drive-stage { min-height: 340px; }
+    .drive-car { width: 94vw; }
+    .drive-message { padding-block: 36px; }
+    .drive-message h2 { font-size: clamp(40px, 10vw, 64px); }
+    .drive-message .kicker { font-size: 10px; letter-spacing: 1.6px; }
+    .drive-hint { font-size: 8px; letter-spacing: 1.2px; }
+    .drive-road { top: 77%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .drive-reveal.is-animated { height: auto; }
+    .is-animated .drive-pin { position: static; height: auto; }
+    .is-animated .drive-message { opacity: 1; transform: none; }
+    .is-animated .drive-car, .is-animated .drive-hint { display: none; }
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>('.drive-reveal');
+  const car = section?.querySelector<HTMLElement>('.drive-car');
+  const image = car?.querySelector<HTMLImageElement>('img');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (section && car && image) {
+    let frame = 0;
+    const clamp = (value: number) => Math.max(0, Math.min(1, value));
+    const update = () => {
+      frame = 0;
+      if (reducedMotion.matches || !section.classList.contains('is-animated')) return;
+      const stage = section.querySelector<HTMLElement>('.drive-stage')!;
+      const pin = section.querySelector<HTMLElement>('.drive-pin')!;
+      const top = Number.parseFloat(getComputedStyle(pin).top) || 0;
+      const distance = Math.max(1, section.offsetHeight - pin.offsetHeight);
+      // Start only once the complete scene is pinned, with a brief stationary lead-in.
+      const progress = clamp((top - section.getBoundingClientRect().top) / distance);
+      const travel = clamp((progress - .12) / .76);
+      const eased = travel * travel * (3 - 2 * travel);
+      const x = eased * ((stage.clientWidth + car.offsetWidth) / 2 + 40);
+      car.style.transform = `translate(calc(-50% + ${x}px), -50%)`;
+      const reveal = clamp((progress - .24) / .52);
+      section.style.setProperty('--message-opacity', String(reveal));
+      section.style.setProperty('--message-offset', `${(1 - reveal) * 24}px`);
+      section.style.setProperty('--hint-opacity', String(1 - clamp((progress - .12) / .2)));
+      const button = section.querySelector<HTMLAnchorElement>('.drive-message .btn');
+      if (button) {
+        button.style.pointerEvents = reveal > .7 ? 'auto' : 'none';
+      }
+    };
+    const requestUpdate = () => { if (!frame) frame = requestAnimationFrame(update); };
+    const configure = () => {
+      section.classList.toggle('is-animated', !reducedMotion.matches);
+      const button = section.querySelector<HTMLAnchorElement>('.drive-message .btn');
+      if (button) button.style.pointerEvents = '';
+      requestUpdate();
+    };
+    image.addEventListener('load', configure);
+    image.addEventListener('error', () => section.classList.remove('is-animated'));
+    reducedMotion.addEventListener('change', configure);
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate, { passive: true });
+    configure();
+  }
+</script>
